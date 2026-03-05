@@ -1,52 +1,55 @@
 # CLAUDE.md
 
-This file provides guidance for AI assistants working in this repository.
+このファイルは、本リポジトリで作業するAIアシスタント向けのガイドラインです。
 
-## Project Overview
+## プロジェクト概要
 
-**ichiyasaGitSample** is a static HTML landing page for the "Ichiyasa Git User Group" (いちばんやさしいGit&GitHubの教本のサンプルプロジェクト) — a sample project from a Japanese Git/GitHub tutorial book. It serves as a community event website for Git study meetings/workshops.
+**ichiyasaGitSample** は「いちばんやさしいGit&GitHubの教本」のサンプルプロジェクトです。
+「Ichiyasa Git User Group」コミュニティのイベント告知用静的HTMLランディングページです。
 
-- **Type**: Static HTML5 website (no build step, no package manager)
-- **Template**: "Read Only" by HTML5 UP (CCA 3.0 license)
-- **Language**: Japanese content, English code
+- **種別**: 静的HTML5サイト（ビルドステップなし・パッケージマネージャーなし）
+- **テンプレート**: HTML5 UP の "Read Only"（CCA 3.0ライセンス）
+- **言語**: コンテンツは日本語、コードは英語
 
-## Repository Structure
+## ディレクトリ構成
 
 ```
 ichiyasaGitSample/
 ├── .github/
 │   └── workflows/
-│       ├── claude.yml              # Claude Code assistant (triggered by @claude mentions)
-│       └── claude-code-review.yml  # Automatic PR code review via Claude
+│       ├── claude.yml              # @claude メンション時に起動するClaudeアシスタント
+│       └── claude-code-review.yml  # PRの自動コードレビュー（Claude）
 ├── assets/
 │   ├── css/
-│   │   ├── main.css               # Main stylesheet (3094 lines, includes grid system)
-│   │   └── font-awesome.min.css   # FontAwesome 4.6.3 icon library
-│   ├── fonts/                     # FontAwesome webfont files
+│   │   ├── main.css               # メインスタイルシート（3094行・グリッド等含む）
+│   │   └── font-awesome.min.css   # FontAwesome 4.6.3
+│   ├── fonts/                     # FontAwesome Webフォント一式
 │   └── js/
-│       ├── jquery.min.js          # jQuery (minified, ~94KB)
-│       ├── jquery.scrolly.min.js  # Smooth scroll plugin
-│       ├── jquery.scrollzer.min.js # Nav active-state plugin
-│       ├── skel.min.js            # Deprecated responsive layout framework
-│       ├── util.js                # jQuery plugin definitions (navList, panel, scrolly, scrollzer)
-│       └── main.js                # Application entry point (112 lines)
+│       ├── jquery.min.js          # jQuery（minified、約94KB）
+│       ├── jquery.scrolly.min.js  # スムーススクロールプラグイン
+│       ├── jquery.scrollzer.min.js # ナビアクティブ状態プラグイン
+│       ├── skel.min.js            # 旧レスポンシブフレームワーク（非推奨）
+│       ├── util.js                # jQueryプラグイン定義（navList, panel, scrolly, scrollzer）
+│       └── main.js                # アプリケーションエントリーポイント（112行）
 ├── images/
-│   ├── avatar.png                 # Community avatar (383x383, 2.3KB)
-│   └── banner.png                 # Header banner (1911x439, 793KB — oversized)
-├── index.html                     # Single-page entry point (170 lines)
-├── .gitignore                     # Minimal — only excludes .DS_Store
-└── README.md                      # Japanese improvement notes
+│   ├── avatar.png                 # コミュニティアバター（383x383、2.3KB）
+│   └── banner.png                 # ヘッダーバナー（1911x439、793KB ※過大）
+├── index.html                     # シングルページ本体（170行）
+├── .gitignore                     # 最小限（.DS_Store のみ除外）
+└── README.md                      # 改善メモ（日本語）
 ```
 
-## Key Files
+## 主要ファイル
 
 ### `index.html`
-The sole HTML file. It contains three sections:
-- `#one` — Community description (Ichiyasa Git User Group)
-- `#two` — Upcoming event announcement (第２回Git勉強会)
-- `#three` — Past events with embedded YouTube iframes
+唯一のHTMLファイル。3つのセクションで構成されます。
 
-Scripts are loaded at the bottom of `<body>` in this order:
+- `#one` — コミュニティ説明（Ichiyasa Git User Group）
+- `#two` — 次回イベント告知（第２回Git勉強会）
+- `#three` — 過去のイベント（YouTubeの埋め込み動画）
+
+スクリプトは `</body>` 直前に以下の順で読み込まれます。
+
 1. `jquery.min.js`
 2. `jquery.scrollzer.min.js`
 3. `jquery.scrolly.min.js`
@@ -55,100 +58,105 @@ Scripts are loaded at the bottom of `<body>` in this order:
 6. `main.js`
 
 ### `assets/js/main.js`
-Initializes the page using the skel framework and jQuery:
-- Sets responsive breakpoints via `skel.breakpoints()`
-- Activates smooth scrolling with `$.scrolly()`
-- Activates nav active-state tracking with `$.scrollzer()`
-- Creates a mobile title bar with a toggle for off-canvas navigation
+skelフレームワークとjQueryでページを初期化します。
+
+- `skel.breakpoints()` でレスポンシブブレークポイントを設定
+- `$.scrolly()` でスムーススクロールを有効化
+- `$.scrollzer()` でナビのアクティブ状態追跡を有効化
+- モバイル向けタイトルバーとオフキャンバスナビゲーションのトグルを生成
 
 ### `assets/css/main.css`
-3094-line stylesheet — the majority is unused template boilerplate. Google Fonts (Lato, Source Code Pro) are loaded via `@import` inside this file.
+3094行のスタイルシート。大半はテンプレートの未使用ボイラープレートです。
+Google Fonts（Lato、Source Code Pro）はこのファイル内の `@import` で読み込まれます（レンダリングブロッキングに注意）。
 
-## Development Workflow
+## 開発ワークフロー
 
-### No Build Step Required
-This is a static site. To view it locally, simply open `index.html` in a browser or serve with any static file server:
+### ビルドステップなし
+静的サイトのため、`index.html` をブラウザで直接開くか、静的ファイルサーバーで配信するだけです。
+
 ```bash
 python3 -m http.server 8080
-# or
+# または
 npx serve .
 ```
 
-### Making Changes
-1. Edit `index.html` for content changes
-2. Edit `assets/css/main.css` for style changes
-3. Edit `assets/js/main.js` for behavior changes
-4. Refresh the browser to preview
+### 変更手順
+1. コンテンツを変更する場合 → `index.html` を編集
+2. スタイルを変更する場合 → `assets/css/main.css` を編集
+3. 動作を変更する場合 → `assets/js/main.js` を編集
+4. ブラウザをリロードして確認
 
-### Branching Convention
-- `master` — stable main branch
-- `claude/<description>-<id>` — Claude-generated feature branches
-- Feature branches are merged via pull requests
+### ブランチ命名規則
+- `master` — 安定したメインブランチ
+- `claude/<説明>-<id>` — Claudeが作成するフィーチャーブランチ
+- すべての変更はプルリクエスト経由でマージする
 
-### Git Workflow
+### Gitワークフロー
 ```bash
-git checkout -b <branch-name>
-# make changes
-git add <specific-files>
-git commit -m "descriptive message"
-git push -u origin <branch-name>
-# then open a pull request
+git checkout -b <ブランチ名>
+# 変更を加える
+git add <特定のファイル>
+git commit -m "わかりやすいメッセージ"
+git push -u origin <ブランチ名>
+# プルリクエストを作成する
 ```
 
 ## CI/CD: GitHub Actions
 
-### `claude.yml` — Claude Code Assistant
-Triggers when any issue or PR comment contains `@claude`. Claude can:
-- Answer questions about the codebase
-- Implement changes and push commits
-- Read CI results on PRs
+### `claude.yml` — Claudeコードアシスタント
+IssueやPRのコメントに `@claude` が含まれると起動します。Claudeは以下を実行できます。
 
-Required secret: `CLAUDE_CODE_OAUTH_TOKEN`
+- コードベースに関する質問への回答
+- 変更の実装とコミット
+- PRのCI結果の参照
 
-### `claude-code-review.yml` — Automatic Code Review
-Triggers on every PR event (opened, synchronize, ready_for_review, reopened). Runs the `code-review` Claude Code plugin automatically.
+必要なシークレット: `CLAUDE_CODE_OAUTH_TOKEN`
 
-Required secret: `CLAUDE_CODE_OAUTH_TOKEN`
+### `claude-code-review.yml` — 自動コードレビュー
+PRイベント（opened, synchronize, ready_for_review, reopened）で自動起動します。
+`code-review` プラグインを使ってClaudeが自動でレビューコメントを投稿します。
 
-## Known Issues (from README)
+必要なシークレット: `CLAUDE_CODE_OAUTH_TOKEN`
 
-These are documented improvement areas — do not treat them as bugs to fix without being asked:
+## 既知の課題（READMEより）
 
-**Content**
-- Speaker/session info is placeholder (`未定` = TBD)
-- No event registration link (connpass / Doorkeeper)
-- Event year missing (only "3月23日" shown)
-- Copyright footer still says "© Untitled"
-- Nav label ("Japan Git User Group") doesn't match section heading ("Ichiyasa Git User Group")
+以下は改善が望まれる点です。指示なしに勝手に修正しないでください。
 
-**Missing Files**
-- `images/speaker1.png` and `images/speaker2.png` are referenced in HTML but do not exist
+**コンテンツ**
+- スピーカー・セッション情報がプレースホルダーのまま（`未定`）
+- イベント参加申し込みリンクがない（connpass / Doorkeeper等）
+- イベントの年が記載されていない（「3月23日」のみ）
+- フッターの著作権表記が `© Untitled` のまま
+- ナビのラベル（「Japan Git User Group」）とセクション見出し（「Ichiyasa Git User Group」）が不一致
 
-**Performance**
-- `banner.png` is 793KB — should be compressed/converted to WebP
-- Google Fonts loaded via `@import` in CSS (render-blocking)
-- `font-awesome.min.css` loaded but FontAwesome icons are not used
-- jQuery (94KB) used only for smooth scroll and nav highlighting
+**不足ファイル**
+- `images/speaker1.png` と `images/speaker2.png` がHTMLで参照されているが存在しない
 
-**Code Quality**
-- `skel.min.js` is an unmaintained legacy framework
-- No `defer`/`async` on script tags
-- Large amount of unused CSS in `main.css`
-- `.gitignore` is minimal
+**パフォーマンス**
+- `banner.png` が793KB（WebP変換と圧縮が必要）
+- Google Fontsを `@import` で読み込んでいる（レンダリングブロッキング）
+- `font-awesome.min.css` を読み込んでいるがアイコンを使っていない
+- jQueryを94KB読み込んでいるがスムーススクロールとナビのみに使用
 
-**SEO / Accessibility**
-- No `<meta name="description">`
-- All images have empty `alt=""` attributes
-- No OGP tags for social sharing
+**コード品質**
+- `skel.min.js` はメンテされていない旧フレームワーク
+- スクリプトタグに `defer` / `async` がない
+- `main.css` に未使用のCSSが大量にある
+- `.gitignore` が最小限すぎる
 
-## Conventions for AI Assistants
+**SEO・アクセシビリティ**
+- `<meta name="description">` がない
+- すべての画像の `alt=""` が空
+- OGPタグがない
 
-- **Edit content** only in `index.html` — all visible page text and structure lives there
-- **Edit styles** only in `assets/css/main.css` — do not add inline styles
-- **Edit behavior** only in `assets/js/main.js` — do not add `<script>` blocks to HTML
-- **Do not add new dependencies** without discussing first — this is intentionally dependency-free
-- **Do not add files** for one-time fixes; prefer editing existing files
-- **Commit specific files** by name; do not use `git add -A` or `git add .`
-- **Use descriptive commit messages** in English or Japanese consistent with existing history
-- **Open pull requests** for all changes; do not push directly to `master`
-- **Speaker images** (`speaker1.png`, `speaker2.png`) are missing — note this when touching the speakers section
+## AIアシスタント向けの規約
+
+- **コンテンツ変更**は `index.html` のみ編集する
+- **スタイル変更**は `assets/css/main.css` のみ編集する（インラインスタイルは追加しない）
+- **動作変更**は `assets/js/main.js` のみ編集する（HTMLに `<script>` ブロックを追加しない）
+- **依存関係の追加**は事前に確認する（このプロジェクトは意図的に依存関係ゼロ）
+- **新規ファイルの作成**は最小限にとどめ、既存ファイルの編集を優先する
+- **git add** はファイル名を指定して実行し、`git add -A` や `git add .` は使わない
+- **コミットメッセージ**は既存の履歴に合わせて日本語または英語で書く
+- **すべての変更**はプルリクエスト経由でマージし、`master` に直接プッシュしない
+- **スピーカー画像**（`speaker1.png`, `speaker2.png`）は存在しないため、該当箇所を変更する際は注意する
